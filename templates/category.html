@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+        {% if category %}
+            {{category.description|truncatewords:160}}
+        {% else %}
+            Welcome to Trival shop. Where yu can buy whatever we need
+        {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{category.name }} - TRIVAL shop
+    {% else %}
+        See our New collectiond - TRIVAL shop
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+<div>
+    <div class="row my-row-class">
+    <div class="mx-auto">
+        <p><a href="{% url 'shopApp:allProdCat' %}" Our product Collections></a></p>
+    </div>
+    </div>
+
+</div>
+    {% endif %}
+        <div class="mx-auto">
+            {% if category %}
+                <img class="my-image" src="{{category.image.url}}" alt="{{category.name}}">
+                </div><br>
+                <div>
+                    <h1 class="text-center my-title">{{category.name}}</h1>
+                </div>
+                <div>
+                    <p class="text-justify">{{category.description}}</p>
+                </div>
+            {% else %}
+                <div>
+                    <img class="my-image my-image-padding" src="{% static 'img/Collection.png' %}" alt="our products" width="1200" height="500">
+                </div>
+                <br>
+                <div>
+                    <h1 class="text_center my-title">Our product collections</h1>
+                    <p class="text-justify">What is Lorem Ipsum?
+Lorem Ipsum is simply
+                        dummy text of the printing and typesetting industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and scrambled it to make a type
+                        specimen book. It  has survived not only five centuries, but also the leap into
+                        electronic typesetting, remaining essentially unchanged. It was popularised in
+                        the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+                        and more recently with desktop publishing software like Aldus PageMaker including
+                        versions of Lorem Ipsum.</p>
+                </div>
+            {% endif %}
+
+            <div class="container">
+                <div class="row mx-auto">
+                    {% for product in products.object_list %}
+                    <div class="my-bottom-margin col-9 col-sm-12 col-md-4  xol-lg-4">
+
+                            <div class="card text-center" style="width: 18rem;">
+                            <a href="{{product.get_url}}"><img class="card-img-top my-image" src="{{product.image.url}}" alt="{{product.0name}}"></a>
+                            <div class="card-body">
+                               <h4> {{product.name}}</h4>
+                                <h4> {{product.price}}</h4>
+
+                        </div>
+                        </div>
+
+                        <br>
+                    </div>
+                    {% endfor %}
+                    </div>
+                    <div class="mx-auto">
+                        {% if products.paginator.num_pages > 1 %}
+                        <hr>
+                        <div class="text_center">
+                            {% for pg in products.paginator.page_range %}
+<                            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div><br>
+
+                </div>
+            </div>
+{% endblock %}
+
